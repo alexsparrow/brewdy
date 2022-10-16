@@ -4,6 +4,7 @@ import { BeerColor } from "./components/BeerColor";
 import { Fermentables } from "./components/Fermentables";
 import { Hops } from "./components/Hops";
 import { Stats } from "./components/Stats";
+import { Yeast } from "./components/Yeast";
 import { Recipe } from "./models/models";
 
 const reducer = (state: Recipe, action: any): Recipe => {
@@ -102,12 +103,26 @@ const defaultRecipe: Recipe = {
         },
       },
     ],
+    culture_additions: [
+      {
+        name: "Belgian Ale Yeast",
+        type: "ale",
+        form: "dry",
+        amount: {
+          unit: "pkg",
+          value: 1,
+        },
+        attenuation: {
+          unit: "%",
+          value: 75,
+        },
+      },
+    ],
   },
 };
 
-
 function App() {
-  const [recipe, dispatchRecipe] = useReducer(reducer,  defaultRecipe);
+  const [recipe, dispatchRecipe] = useReducer(reducer, defaultRecipe);
   return (
     <div className="App">
       <BeerColor recipe={recipe} />
@@ -125,6 +140,14 @@ function App() {
           hops={recipe.ingredients.hop_additions || []}
           updateHop={(idx, hop) =>
             dispatchRecipe({ type: "updateHop", idx, hop })
+          }
+        />
+      </div>
+      <div className="mt-8">
+        <Yeast
+          yeast={recipe.ingredients.culture_additions || []}
+          updateYeast={(idx, yeast) =>
+            dispatchRecipe({ type: "updateYeast", idx, yeast })
           }
         />
       </div>

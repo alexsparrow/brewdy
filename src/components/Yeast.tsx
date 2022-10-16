@@ -38,7 +38,7 @@ const Row = ({
   onEditCancel,
   onChange,
 }: {
-  item: BeerJSON.HopAdditionType;
+  item: BeerJSON.CultureAdditionType;
   editing: boolean;
   onEdit: () => void;
   onEditSave: () => void;
@@ -51,7 +51,7 @@ const Row = ({
         <div className="h-10 w-10 flex-shrink-0">
           <img
             className="h-10 w-10 rounded-full"
-            src={"/1920px-Hopfendolde-mit-hopfengarten.jpg"}
+            src={"/1280px-S_cerevisiae_under_DIC_microscopy.jpg"}
             alt=""
           />
         </div>
@@ -62,32 +62,7 @@ const Row = ({
       </div>
     </td>
     <td className="whitespace-nowrap px-3 py-4 text-2xl">
-      <div className="w-24 h-8">AA: {item.alpha_acid.value}</div>
-    </td>
-    <td className="whitespace-nowrap px-3 py-4 text-2xl">
-      <div className="w-24 h-8">
-        {editing ? (
-          <NumericEdit
-            label="weight"
-            initialValue={item.amount.value}
-            onChange={(value) =>
-              onChange({
-                amount: {
-                  ...item.amount,
-                  value,
-                },
-              })
-            }
-          />
-        ) : (
-          <>
-            {item.amount.value} {item.amount.unit}{" "}
-          </>
-        )}
-      </div>
-      <span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
-        @ {item.timing.time?.value} {item.timing.time?.unit}
-      </span>
+      <div className="w-24 h-8">Attenuation: {item.attenuation?.value}</div>
     </td>
     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
       {editing ? (
@@ -120,22 +95,22 @@ const Row = ({
   </tr>
 );
 
-export const Hops = ({
-  hops,
-  updateHop,
+export const Yeast = ({
+  yeast,
+  updateYeast,
 }: {
-  hops: BeerJSON.HopAdditionType[];
-  updateHop: (idx: number, fermentable: BeerJSON.HopAdditionType) => void;
+  yeast: BeerJSON.CultureAdditionType[];
+  updateYeast: (idx: number, yeast: BeerJSON.CultureAdditionType) => void;
 }) => {
   const [editingIdx, setEditingIdx] = useState<number | null>(null);
   const [restoreValue, setRestoreValue] =
-    useState<BeerJSON.HopAdditionType | null>(null);
+    useState<BeerJSON.CultureAdditionType | null>(null);
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-xl font-semibold text-gray-900">Hops</h1>
+          <h1 className="text-xl font-semibold text-gray-900">Cultures</h1>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
           <button
@@ -167,12 +142,6 @@ export const Hops = ({
                     </th>
                     <th
                       scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Addition
-                    </th>
-                    <th
-                      scope="col"
                       className="relative py-3.5 pl-3 pr-4 sm:pr-6"
                     >
                       <span className="sr-only">Edit</span>
@@ -180,18 +149,18 @@ export const Hops = ({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {hops.map((hop, idx) => (
+                  {yeast.map((yeast, idx) => (
                     <Row
-                      item={hop}
+                      item={yeast}
                       editing={editingIdx == idx}
                       key={idx}
                       onEdit={() => {
-                        setRestoreValue({ ...hop });
+                        setRestoreValue({ ...yeast });
                         setEditingIdx(idx);
                       }}
                       onEditCancel={() => {
                         if (restoreValue) {
-                          updateHop(idx, restoreValue);
+                          updateYeast(idx, restoreValue);
                         }
                         setRestoreValue(null);
                         setEditingIdx(null);
@@ -201,7 +170,7 @@ export const Hops = ({
                         setEditingIdx(null);
                       }}
                       onChange={(v) => {
-                        updateHop(idx, { ...hop, ...v });
+                        updateYeast(idx, { ...yeast, ...v });
                       }}
                     />
                   ))}
