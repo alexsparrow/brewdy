@@ -2,6 +2,7 @@ import { useContext, useReducer } from "react";
 import { og } from "./algos/gravity";
 import { BeerColor } from "./components/BeerColor";
 import { Fermentables } from "./components/Fermentables";
+import { Hops } from "./components/Hops";
 import { Stats } from "./components/Stats";
 import { Recipe } from "./models/models";
 
@@ -23,69 +24,90 @@ const reducer = (state: Recipe, action: any): Recipe => {
   }
 };
 
-function App() {
-  const [recipe, dispatchRecipe] = useReducer(reducer, {
-    name: "My Recipe",
-    type: "all grain",
-    author: "",
-    batch_size: {
-      unit: "l",
-      value: 18.92,
+const defaultRecipe: Recipe = {
+  name: "My Recipe",
+  type: "all grain",
+  author: "",
+  batch_size: {
+    unit: "l",
+    value: 18.92,
+  },
+  efficiency: {
+    brewhouse: {
+      value: 80,
+      unit: "%",
     },
-    efficiency: {
-      brewhouse: {
-        value: 80,
-        unit: "%"
+    mash: {
+      value: 80,
+      unit: "%",
+    },
+  },
+  ingredients: {
+    fermentable_additions: [
+      {
+        name: "Maris Otter",
+        type: "grain",
+        producer: "Crisp",
+        amount: {
+          value: 1.58,
+          unit: "kg",
+        },
+        color: {
+          value: 7.9,
+          unit: "EBC",
+        },
+        yield: {
+          fine_grind: {
+            value: 81,
+            unit: "%",
+          },
+        },
       },
-      mash: {
-        value: 80,
-        unit: "%",
-      }
-    },
-    ingredients: {
-      fermentable_additions: [
-        {
-          name: "Maris Otter",
-          type: "grain",
-          producer: "Crisp",
-          amount: {
-            value: 1.58,
-            unit: "kg",
-          },
-          color: {
-            value: 7.9,
-            unit: "EBC",
-          },
-          yield: {
-            fine_grind: {
-              value: 81,
-              unit: "%",
-            },
+      {
+        name: "Pilsner",
+        type: "grain",
+        producer: "Crisp",
+        amount: {
+          value: 0.9,
+          unit: "kg",
+        },
+        color: {
+          value: 7.9,
+          unit: "EBC",
+        },
+        yield: {
+          fine_grind: {
+            value: 78,
+            unit: "%",
           },
         },
-        {
-          name: "Pilsner",
-          type: "grain",
-          producer: "Crisp",
-          amount: {
-            value: 0.9,
-            unit: "kg",
-          },
-          color: {
-            value: 7.9,
-            unit: "EBC",
-          },
-          yield: {
-            fine_grind: {
-              value: 78,
-              unit: "%",
-            },
+      },
+    ],
+    hop_additions: [
+      {
+        name: "East Kent Goldings",
+        alpha_acid: {
+          value: 5.5,
+          unit: "%",
+        },
+        amount: {
+          value: 100,
+          unit: "g",
+        },
+        timing: {
+          time: {
+            value: 20,
+            unit: "min",
           },
         },
-      ],
-    },
-  });
+      },
+    ],
+  },
+};
 
+
+function App() {
+  const [recipe, dispatchRecipe] = useReducer(reducer,  defaultRecipe);
   return (
     <div className="App">
       <BeerColor recipe={recipe} />
@@ -95,6 +117,14 @@ function App() {
           fermentables={recipe.ingredients.fermentable_additions}
           updateFermentable={(idx, fermentable) =>
             dispatchRecipe({ type: "updateFermentable", idx, fermentable })
+          }
+        />
+      </div>
+      <div className="mt-8">
+        <Hops
+          hops={recipe.ingredients.hop_additions || []}
+          updateHop={(idx, hop) =>
+            dispatchRecipe({ type: "updateHop", idx, hop })
           }
         />
       </div>

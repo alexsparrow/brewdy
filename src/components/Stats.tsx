@@ -1,5 +1,6 @@
 import { ebcColor } from "../algos/color";
 import { abv, fg, og } from "../algos/gravity";
+import { tinsethIBU } from "../algos/hops";
 import { Recipe } from "../models/models";
 
 export const Stats = ({ recipe }: { recipe: Recipe }) => {
@@ -31,6 +32,14 @@ export const Stats = ({ recipe }: { recipe: Recipe }) => {
       stat: ebcColor(
         recipe.ingredients.fermentable_additions,
         recipe.batch_size
+      ).toFixed(1),
+    },
+    {
+      name: "IBU",
+      stat: tinsethIBU(
+        recipe.ingredients.hop_additions || [],
+        recipe.batch_size,
+        originalGravity
       ).toFixed(1),
     },
   ];

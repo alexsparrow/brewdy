@@ -38,7 +38,6 @@ function amountToLb(amount: BeerJSON.MassType | BeerJSON.VolumeType) {
 function gravityUnit(fermentable: BeerJSON.FermentableAdditionType) {
     const yieldPPG = yieldToPPG(fermentable.yield);
     const amountLb = amountToLb(fermentable.amount);
-    console.log(amountLb);
 
     return yieldPPG * amountLb;
 }
