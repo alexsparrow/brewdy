@@ -1,16 +1,17 @@
 import { useState } from "react";
-import { yieldToPPG } from "../algos/gravity";
+import { ppgToYield, yieldToPPG } from "../algos/gravity";
 import { OlFarve } from "../algos/olfarve";
 
 export const NumericEdit = ({
   label,
-  value,
+  initialValue,
   onChange,
 }: {
   label: string;
-  value: number;
+  initialValue: number;
   onChange: (value: number) => void;
 }) => {
+  const [value, setValue] = useState(initialValue);
   return (
     <div>
       <label htmlFor="email" className="sr-only">
@@ -19,7 +20,11 @@ export const NumericEdit = ({
       <input
         type="number"
         value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
+        onChange={(e) => {
+            const numeric = Number(e.target.value);
+            setValue(numeric);
+            onChange(numeric);
+        }}
         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         placeholder={label}
       />
@@ -58,12 +63,27 @@ export const FermentableRow = ({
         </div>
       </div>
     </td>
-    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-      <div className="text-gray-900">
-        {fermentable.yield.fine_grind?.value}{" "}
-        {fermentable.yield.fine_grind?.unit}
+    <td className="whitespace-nowrap px-3 py-4 text-2xl">
+      <div className="w-24 h-8">
+        {editing ? (
+          <NumericEdit
+            label="yield"
+            initialValue={yieldToPPG(fermentable.yield)}
+            onChange={(value) =>
+              onChange({
+                yield: {
+                  fine_grind: {
+                    ...fermentable.yield.fine_grind,
+                    value: ppgToYield(value),
+                  },
+                },
+              })
+            }
+          />
+        ) : (
+          <>{yieldToPPG(fermentable.yield).toFixed(3)} PPG</>
+        )}
       </div>
-      <div className="text-gray-900">{yieldToPPG(fermentable.yield)} PPG</div>
       <span
         className="inline-flex rounded-full px-2 text-xs leading-5 text-gray-500"
         style={{
@@ -76,11 +96,11 @@ export const FermentableRow = ({
       </span>
     </td>
     <td className="whitespace-nowrap px-3 py-4 text-2xl">
-      <div className="w-16 h-8">
+      <div className="w-24 h-8">
         {editing ? (
           <NumericEdit
             label="weight"
-            value={fermentable.amount.value}
+            initialValue={fermentable.amount.value}
             onChange={(value) =>
               onChange({
                 amount: {

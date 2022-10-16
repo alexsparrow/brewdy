@@ -11,6 +11,10 @@ export function yieldToPPG(yield_: BeerJSON.YieldType) {
     throw Error(`Don't know to handle this yield`);
 }
 
+export function ppgToYield(ppg: number) {
+    return ppg / 46.21 * 100;
+}
+
 function amountToKg(amount: BeerJSON.MassType | BeerJSON.VolumeType) {
     switch (amount.unit) {
         case "kg":
