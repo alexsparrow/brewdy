@@ -3,7 +3,6 @@
 
 Brewdy is open source homebrewing software built in react. The result of about 6 hours of hacking so far, it's pre-pre-pre-alpha.
 
-![Screenshot](/web/screenshot1.png?raw=true "Screenshot")
 
 ## Near term goals
 - A data model based on [beerjson](https://beerjson.github.io/)
@@ -22,6 +21,7 @@ Brewdy is open source homebrewing software built in react. The result of about 6
 - Support for logging brewing data.
 - Support for [grainfather bluetooth protocol](https://github.com/kingpulsar/Grainfather-Bluetooth-Protocol)
 
+![Screenshot](/web/screenshot1.png?raw=true "Screenshot")
 
 ## Tech stack
 - [React](https://reactjs.org/)
