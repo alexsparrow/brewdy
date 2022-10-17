@@ -49,7 +49,7 @@ db.serialize(() => {
       }
       const style: BeerJSON.StyleType = {
         name: row.name,
-        type: row.s_type,
+        type: row.s_type == "Cider" ? "cider" : "beer",
         category: row.category,
         style_guide: row.style_guide,
         style_letter: row.style_letter,

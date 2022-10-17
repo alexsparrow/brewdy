@@ -1,10 +1,14 @@
 import { useReducer } from "react";
-import { BeerColor } from "../components/BeerColor";
 import { Fermentables } from "../components/Fermentables";
 import { Hops } from "../components/Hops";
+import { Select } from "../components/Select";
 import { Stats } from "../components/Stats";
 import { Yeast } from "../components/Yeast";
 import { Recipe } from "../models/models";
+import _ from "lodash";
+import styles from "../json/styles.json";
+
+const beerStyles = _.sortBy(styles, (s) => s.name);
 
 const reducer = (state: Recipe, action: any): Recipe => {
   switch (action.type) {
@@ -18,6 +22,11 @@ const reducer = (state: Recipe, action: any): Recipe => {
           ...state.ingredients,
           fermentable_additions: fermentableAdditions,
         },
+      };
+    case "updateStyle":
+      return {
+        ...state,
+        style: { ...beerStyles[action.id], type: "beer" },
       };
     default:
       throw Error("JUST NO");
@@ -124,8 +133,29 @@ export const RecipeCreator = () => {
   const [recipe, dispatchRecipe] = useReducer(reducer, defaultRecipe);
   return (
     <div className="App">
-      <BeerColor recipe={recipe} />
       <Stats recipe={recipe} />
+      <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+        <div className="sm:col-span-3">
+          <Select
+            label="Style"
+            selected={
+              recipe.style
+                ? { label: recipe.style.name, id: recipe.style.name }
+                : null
+            }
+            options={beerStyles.map((s, idx) => ({
+              label: s.name,
+              id: idx,
+            }))}
+            setSelected={(id) =>
+              dispatchRecipe({
+                type: "updateStyle",
+                id,
+              })
+            }
+          />
+        </div>
+      </div>
       <div className="mt-8">
         <Fermentables
           fermentables={recipe.ingredients.fermentable_additions}
