@@ -1,8 +1,9 @@
 # brewdy
 
-![Screenshot](/web/screenshot1.png?raw=true "Screenshot")
 
 Brewdy is open source homebrewing software built in react. The result of about 6 hours of hacking so far, it's pre-pre-pre-alpha.
+
+![Screenshot](/web/screenshot1.png?raw=true "Screenshot")
 
 ## Near term goals
 - A data model based on [beerjson](https://beerjson.github.io/)
