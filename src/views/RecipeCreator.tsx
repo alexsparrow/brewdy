@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { Fermentables } from "../components/Fermentables";
+import { Fermentables, NumericEdit } from "../components/Fermentables";
 import { Hops } from "../components/Hops";
 import { Select } from "../components/Select";
 import { Stats } from "../components/Stats";
@@ -7,6 +7,7 @@ import { Yeast } from "../components/Yeast";
 import { Recipe } from "../models/models";
 import _ from "lodash";
 import styles from "../json/styles.json";
+import { defaultRecipe } from "../utils/defaultRecipe";
 
 const beerStyles = _.sortBy(styles, (s) => s.name);
 
@@ -28,105 +29,14 @@ const reducer = (state: Recipe, action: any): Recipe => {
         ...state,
         style: { ...beerStyles[action.id], type: "beer" },
       };
+    case "updateBatchSize":
+      return {
+        ...state,
+        batch_size: { value: action.value, unit: action.unit },
+      };
     default:
       throw Error("JUST NO");
   }
-};
-
-const defaultRecipe: Recipe = {
-  name: "My Recipe",
-  type: "all grain",
-  author: "",
-  batch_size: {
-    unit: "l",
-    value: 18.92,
-  },
-  efficiency: {
-    brewhouse: {
-      value: 80,
-      unit: "%",
-    },
-    mash: {
-      value: 80,
-      unit: "%",
-    },
-  },
-  ingredients: {
-    fermentable_additions: [
-      {
-        name: "Maris Otter",
-        type: "grain",
-        producer: "Crisp",
-        amount: {
-          value: 1.58,
-          unit: "kg",
-        },
-        color: {
-          value: 7.9,
-          unit: "EBC",
-        },
-        yield: {
-          fine_grind: {
-            value: 81,
-            unit: "%",
-          },
-        },
-      },
-      {
-        name: "Pilsner",
-        type: "grain",
-        producer: "Crisp",
-        amount: {
-          value: 0.9,
-          unit: "kg",
-        },
-        color: {
-          value: 7.9,
-          unit: "EBC",
-        },
-        yield: {
-          fine_grind: {
-            value: 78,
-            unit: "%",
-          },
-        },
-      },
-    ],
-    hop_additions: [
-      {
-        name: "East Kent Goldings",
-        alpha_acid: {
-          value: 5.5,
-          unit: "%",
-        },
-        amount: {
-          value: 100,
-          unit: "g",
-        },
-        timing: {
-          time: {
-            value: 20,
-            unit: "min",
-          },
-        },
-      },
-    ],
-    culture_additions: [
-      {
-        name: "Belgian Ale Yeast",
-        type: "ale",
-        form: "dry",
-        amount: {
-          unit: "pkg",
-          value: 1,
-        },
-        attenuation: {
-          unit: "%",
-          value: 75,
-        },
-      },
-    ],
-  },
 };
 
 export const RecipeCreator = () => {
@@ -134,26 +44,52 @@ export const RecipeCreator = () => {
   return (
     <div className="App">
       <Stats recipe={recipe} />
-      <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-        <div className="sm:col-span-3">
-          <Select
-            label="Style"
-            selected={
-              recipe.style
-                ? { label: recipe.style.name, id: recipe.style.name }
-                : null
-            }
-            options={beerStyles.map((s, idx) => ({
-              label: s.name,
-              id: idx,
-            }))}
-            setSelected={(id) =>
-              dispatchRecipe({
-                type: "updateStyle",
-                id,
-              })
-            }
-          />
+      <div className="px-4 sm:px-6 lg:px-8">
+        <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+          <div className="sm:col-span-3">
+            <Select
+              label="Style"
+              selected={
+                recipe.style
+                  ? { label: recipe.style.name, id: recipe.style.name }
+                  : null
+              }
+              options={beerStyles.map((s, idx) => ({
+                label: s.name,
+                id: idx,
+              }))}
+              setSelected={(id) =>
+                dispatchRecipe({
+                  type: "updateStyle",
+                  id,
+                })
+              }
+            />
+          </div>
+          <div className="sm:col-span-3">
+            <label
+              htmlFor="batchSize"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Batch Size
+            </label>
+            <div className="mt-1">
+              <input
+                type="number"
+                value={recipe.batch_size.value}
+                onChange={(e) =>
+                  dispatchRecipe({
+                    type: "updateBatchSize",
+                    value: Number(e.target.value),
+                    unit: "l",
+                  })
+                }
+                name="batchSize"
+                id="batchSize"
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+            </div>
+          </div>
         </div>
       </div>
       <div className="mt-8">
