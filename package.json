@@ -2,6 +2,7 @@
   "name": "brewdy",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://alexsparrow.dev/brewdy",
   "dependencies": {
     "@beerjson/beerjson": "^1.0.2",
     "@headlessui/react": "^1.7.3",
@@ -29,7 +30,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dump-db": "ts-node scripts/dumpDb.ts"
+    "dump-db": "ts-node scripts/dumpDb.ts",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -53,6 +56,7 @@
     "@types/lodash": "^4.14.186",
     "@types/uuid": "^8.3.4",
     "autoprefixer": "^10.4.12",
+    "gh-pages": "^4.0.0",
     "postcss": "^8.4.18",
     "sqlite3": "^5.1.2",
     "tailwindcss": "^3.1.8",

@@ -1,6 +1,7 @@
 import Tippy from "@tippyjs/react";
 import React from "react";
 import "./Range.css";
+import colors from "tailwindcss/colors";
 
 const RegularSlider = ({
   range,
@@ -19,7 +20,12 @@ const RegularSlider = ({
     min={range[0]}
     max={range[1]}
     step={step}
-    className="my-auto opacity-50 w-full bg-white h-2 appearance-none focus:outline-none relative pointer-events-none"
+    className="my-auto opacity-50 w-full bg-white h-2 appearance-none focus:outline-none relative pointer-events-none slider"
+    style={
+      {
+        "--SliderColor": colors.blue[600],
+      } as React.CSSProperties
+    }
   />
 );
 
@@ -69,7 +75,7 @@ export const Range = ({
   color,
   colorFrom,
   colorTo,
-  decimalPlaces
+  decimalPlaces,
 }: {
   label: string;
   value: number;

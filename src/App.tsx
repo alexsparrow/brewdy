@@ -39,19 +39,20 @@ const App = () => {
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
                         {navigation.map((item) => (
-                          <a
-                            key={item.name}
-                            href={item.href}
-                            className={classNames(
-                              item.current
-                                ? "bg-indigo-700 text-white"
-                                : "text-white hover:bg-indigo-500 hover:bg-opacity-75",
-                              "px-3 py-2 rounded-md text-sm font-medium"
-                            )}
-                            aria-current={item.current ? "page" : undefined}
-                          >
-                            {item.name}
-                          </a>
+                          <Link to={item.href}>
+                            <a
+                              key={item.name}
+                              className={classNames(
+                                item.current
+                                  ? "bg-indigo-700 text-white"
+                                  : "text-white hover:bg-indigo-500 hover:bg-opacity-75",
+                                "px-3 py-2 rounded-md text-sm font-medium"
+                              )}
+                              aria-current={item.current ? "page" : undefined}
+                            >
+                              {item.name}
+                            </a>
+                          </Link>
                         ))}
                       </div>
                     </div>

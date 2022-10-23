@@ -15,6 +15,7 @@ import { fermentables } from "../data/fermentables";
 import { hops } from "../data/hops";
 import { cultures } from "../data/cultures";
 
+
 const FermentablesTable = IngredientTable<
   BeerJSON.FermentableAdditionType,
   BeerJSON.FermentableType

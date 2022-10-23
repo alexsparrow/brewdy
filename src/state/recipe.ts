@@ -79,7 +79,7 @@ const addHop = (state: Recipe, action: any): Recipe => {
     timing: {
       time: {
         unit: "min",
-        value: 0,
+        value: 60,
       },
     },
   };
