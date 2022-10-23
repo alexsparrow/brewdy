@@ -1,12 +1,13 @@
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { RecipeCreator } from "./views/RecipeCreator";
 import "tippy.js/dist/tippy.css";
 import { classNames } from "./utils/classNames";
+import { Routes, Route, Link } from "react-router-dom";
+import { Home } from "./views/Home";
+import { RecipeView } from "./views/RecipeView";
 
 const navigation = [
-  { name: "Home", href: "#", current: false },
-  { name: "Recipes", href: "#", current: true },
+  { name: "Home", href: "/", current: false },
   { name: "Settings", href: "#", current: false },
 ];
 
@@ -118,9 +119,10 @@ const App = () => {
           </div>
         </header> */}
         <main>
-          <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-            <RecipeCreator />
-          </div>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/recipe/:id" element={<RecipeView />} />
+          </Routes>
         </main>
       </div>
     </>

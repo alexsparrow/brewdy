@@ -23,20 +23,6 @@ export const defaultRecipe: Recipe = {
   ingredients: {
     fermentable_additions: [],
     hop_additions: [],
-    culture_additions: [
-      {
-        name: "Belgian Ale Yeast",
-        type: "ale",
-        form: "dry",
-        amount: {
-          unit: "pkg",
-          value: 1,
-        },
-        attenuation: {
-          unit: "%",
-          value: 75,
-        },
-      },
-    ],
+    culture_additions: [],
   },
 };

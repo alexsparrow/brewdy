@@ -193,9 +193,9 @@ export const Row = <A extends Addition>({
           </>
         )}
       </div>
-      <span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
+      {/* <span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
         Mash
-      </span>
+      </span> */}
     </td>
     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
       <div className="space-x-2">
@@ -300,34 +300,42 @@ export const IngredientTable = <A extends Addition, I extends Ingredient>({
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {items.map((item, idx) => (
-                      <Row
-                        image={image}
-                        item={item}
-                        editing={editingIdx === idx}
-                        key={idx}
-                        onEdit={() => {
-                          setRestoreValue({ ...item });
-                          setEditingIdx(idx);
-                        }}
-                        onEditCancel={() => {
-                          if (restoreValue) {
-                            update(idx, restoreValue);
-                          }
-                          setRestoreValue(null);
-                          setEditingIdx(null);
-                        }}
-                        onEditSave={() => {
-                          setRestoreValue(null);
-                          setEditingIdx(null);
-                        }}
-                        onChange={(v) => {
-                          update(idx, { ...item, ...v });
-                        }}
-                        onDelete={() => delete_(idx)}
-                        Details={Details}
-                      />
-                    ))}
+                    {items.length > 0 ? (
+                      items.map((item, idx) => (
+                        <Row
+                          image={image}
+                          item={item}
+                          editing={editingIdx === idx}
+                          key={idx}
+                          onEdit={() => {
+                            setRestoreValue({ ...item });
+                            setEditingIdx(idx);
+                          }}
+                          onEditCancel={() => {
+                            if (restoreValue) {
+                              update(idx, restoreValue);
+                            }
+                            setRestoreValue(null);
+                            setEditingIdx(null);
+                          }}
+                          onEditSave={() => {
+                            setRestoreValue(null);
+                            setEditingIdx(null);
+                          }}
+                          onChange={(v) => {
+                            update(idx, { ...item, ...v });
+                          }}
+                          onDelete={() => delete_(idx)}
+                          Details={Details}
+                        />
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={4} className="p-4 text-lg text-center">
+                          You haven't added any yet
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
