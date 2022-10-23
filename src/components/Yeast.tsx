@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AnchorButton } from "./AnchorButton";
 
 export const NumericEdit = ({
   label,
@@ -66,30 +67,12 @@ const Row = ({
     </td>
     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
       {editing ? (
-        <>
-          <a
-            href="#"
-            className="text-indigo-600 hover:text-indigo-900"
-            onClick={onEditSave}
-          >
-            Save
-          </a>
-          <a
-            href="#"
-            className="text-indigo-600 hover:text-indigo-900 ml-2"
-            onClick={onEditCancel}
-          >
-            Cancel
-          </a>
-        </>
+        <div className="space-x-2">
+          <AnchorButton onClick={onEditSave}>Save</AnchorButton>
+          <AnchorButton onClick={onEditCancel}>Cancel</AnchorButton>
+        </div>
       ) : (
-        <a
-          href="#"
-          className="text-indigo-600 hover:text-indigo-900"
-          onClick={onEdit}
-        >
-          Edit
-        </a>
+        <AnchorButton onClick={onEdit}>Edit</AnchorButton>
       )}
     </td>
   </tr>
@@ -152,7 +135,7 @@ export const Yeast = ({
                   {yeast.map((yeast, idx) => (
                     <Row
                       item={yeast}
-                      editing={editingIdx == idx}
+                      editing={editingIdx === idx}
                       key={idx}
                       onEdit={() => {
                         setRestoreValue({ ...yeast });

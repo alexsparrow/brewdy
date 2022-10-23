@@ -31,9 +31,7 @@ function mgplAddedAlphaAcids(
 }
 
 function boilTimeFactor(hop: BeerJSON.HopAdditionType) {
-  const v = (1 - Math.exp(-0.04 * timeInMinutes(hop.timing.time!))) / 4.15;
-  console.log(v);
-  return v;
+  return (1 - Math.exp(-0.04 * timeInMinutes(hop.timing.time!))) / 4.15;
 }
 
 // See: https://homebrewacademy.com/ibu-calculator/
@@ -43,14 +41,11 @@ export function tinsethIBU(
   og: number
 ) {
   const bignessFactor = 1.65 * 0.000125 ** (og - 1);
-  console.log(bignessFactor);
 
   const ibus = hops.map(
     (hop) =>
       bignessFactor * boilTimeFactor(hop) * mgplAddedAlphaAcids(hop, batchSize)
   );
-
-  console.log(ibus);
 
   return ibus.reduce((a, b) => a + b, 0);
 }

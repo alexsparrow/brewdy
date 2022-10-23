@@ -14,6 +14,7 @@ const RegularSlider = ({
     id="default-range"
     type="range"
     value={value}
+    onChange={() => null}
     min={range[0]}
     max={range[1]}
     step={step}
@@ -40,6 +41,7 @@ const FancyColorSlider = ({
     id="default-range"
     type="range"
     value={value}
+    onChange={() => null}
     min={range[0]}
     max={range[1]}
     step={step}
