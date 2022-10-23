@@ -8,6 +8,8 @@ import { Recipe } from "../models/models";
 import _ from "lodash";
 import styles from "../json/styles.json";
 import { defaultRecipe } from "../utils/defaultRecipe";
+import { Range } from "../components/Range";
+import { og } from "../algos/gravity";
 
 const beerStyles = _.sortBy(styles, (s) => s.name);
 
@@ -41,6 +43,13 @@ const reducer = (state: Recipe, action: any): Recipe => {
 
 export const RecipeCreator = () => {
   const [recipe, dispatchRecipe] = useReducer(reducer, defaultRecipe);
+  const style = beerStyles.find((s) => s.name === recipe.style?.name);
+  const originalGravity = og(
+    recipe.ingredients.fermentable_additions,
+    recipe.batch_size,
+    recipe.efficiency.mash!
+  );
+  console.log(style);
   return (
     <div className="App">
       <Stats recipe={recipe} />
@@ -92,6 +101,23 @@ export const RecipeCreator = () => {
           </div>
         </div>
       </div>
+      <Range
+        value={originalGravity}
+        label="OG"
+        step={0.001}
+        range={[
+          0.97 * style?.original_gravity.minimum.value!,
+          1.03 * style?.original_gravity.maximum.value!,
+        ]}
+        green={[
+          style?.original_gravity.minimum.value!,
+          style?.original_gravity.maximum.value!,
+        ]}
+        yellow={[
+          0.98 * style?.original_gravity.minimum.value!,
+          1.02 * style?.original_gravity.maximum.value!,
+        ]}
+      />
       <div className="mt-8">
         <Fermentables
           fermentables={recipe.ingredients.fermentable_additions}
