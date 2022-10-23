@@ -1,3 +1,4 @@
+import Tippy from "@tippyjs/react";
 import React from "react";
 import "./Range.css";
 
@@ -96,23 +97,43 @@ export const Range = ({
         {label}
       </label>
       <div className="flex flex-row items-center">
-        <div className="m-2 text-sm text-gray-500 w-12">{value.toFixed(decimalPlaces)}</div>
+        <div className="m-2 text-sm text-gray-500 w-12">
+          {value.toFixed(decimalPlaces)}
+        </div>
         <div className="relative h-6 flex flex-1">
-          <div className="from-red-400 to-red-500 absolute inset-0 bg-gradient-to-b hover:opacity-75 rounded-md" />
-          <div
-            className="from-yellow-400 to-yellow-500 inset-y-0 absolute hover:opacity-75 bg-gradient-to-b"
-            style={{
-              left: `${100 * yellowLeft}%`,
-              width: `${100 * yellowWidth}%`,
-            }}
-          />
-          <div
-            className="from-green-400 to-green-500 inset-y-0 absolute hover:opacity-75 bg-gradient-to-b"
-            style={{
-              left: `${100 * greenLeft}%`,
-              width: `${100 * greenWidth}%`,
-            }}
-          />
+          <Tippy
+            content={`${range[0].toFixed(decimalPlaces)} - ${range[1].toFixed(
+              decimalPlaces
+            )}`}
+          >
+            <div className="from-red-400 to-red-500 absolute inset-0 bg-gradient-to-b hover:opacity-75 rounded-md" />
+          </Tippy>
+          <Tippy
+            content={`${yellow[0].toFixed(decimalPlaces)} - ${yellow[1].toFixed(
+              decimalPlaces
+            )}`}
+          >
+            <div
+              className="from-yellow-400 to-yellow-500 inset-y-0 absolute hover:opacity-75 bg-gradient-to-b"
+              style={{
+                left: `${100 * yellowLeft}%`,
+                width: `${100 * yellowWidth}%`,
+              }}
+            />
+          </Tippy>
+          <Tippy
+            content={`${green[0].toFixed(decimalPlaces)} - ${green[1].toFixed(
+              decimalPlaces
+            )}`}
+          >
+            <div
+              className="from-green-400 to-green-500 inset-y-0 absolute hover:opacity-75 bg-gradient-to-b"
+              style={{
+                left: `${100 * greenLeft}%`,
+                width: `${100 * greenWidth}%`,
+              }}
+            />
+          </Tippy>
 
           {colorFrom && colorTo && color ? (
             <FancyColorSlider
