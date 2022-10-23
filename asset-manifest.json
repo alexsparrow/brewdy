@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/brewdy/static/css/main.239411d5.css",
+    "main.js": "/brewdy/static/js/main.1de15a77.js",
+    "static/js/787.f5b844e5.chunk.js": "/brewdy/static/js/787.f5b844e5.chunk.js",
+    "index.html": "/brewdy/index.html",
+    "main.239411d5.css.map": "/brewdy/static/css/main.239411d5.css.map",
+    "main.1de15a77.js.map": "/brewdy/static/js/main.1de15a77.js.map",
+    "787.f5b844e5.chunk.js.map": "/brewdy/static/js/787.f5b844e5.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.239411d5.css",
+    "static/js/main.1de15a77.js"
+  ]
+}
