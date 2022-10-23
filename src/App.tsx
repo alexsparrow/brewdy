@@ -22,12 +22,12 @@ const App = () => {
                 <div className="flex h-16 items-center justify-between">
                   <div className="flex items-center">
                     <div className="flex items-baseline h-full">
-                      <a
-                        href="/"
+                      <Link
+                        to="/"
                         className="text-2xl font-bold text-indigo-100 my-auto"
                       >
                         brewdy
-                      </a>
+                      </Link>
                     </div>
                     {/* <div className="flex-shrink-0">
                       <img
@@ -39,8 +39,7 @@ const App = () => {
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
                         {navigation.map((item) => (
-                          <Link to={item.href}>
-                            <a
+                          <Link to={item.href}
                               key={item.name}
                               className={classNames(
                                 item.current
@@ -51,7 +50,6 @@ const App = () => {
                               aria-current={item.current ? "page" : undefined}
                             >
                               {item.name}
-                            </a>
                           </Link>
                         ))}
                       </div>
