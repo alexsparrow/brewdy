@@ -1,4 +1,5 @@
 import { beerStyles } from "../data/beerStyles";
+import { fermentables } from "../data/fermentables";
 import { Recipe } from "../models/models";
 
 const updateFermentable = (state: Recipe, action: any): Recipe => {
@@ -15,23 +16,16 @@ const updateFermentable = (state: Recipe, action: any): Recipe => {
 };
 
 const addFermentable = (state: Recipe, action: any): Recipe => {
+  const fermentable: BeerJSON.FermentableType = action.fermentable;
   const newFermentable: BeerJSON.FermentableAdditionType = {
-    name: "Foo",
-    type: "grain",
+    name: fermentable.name,
+    type: fermentable.type,
     amount: {
       unit: "kg",
       value: 1,
     },
-    yield: {
-      fine_grind: {
-        unit: "%",
-        value: 75,
-      },
-    },
-    color: {
-      unit: "EBC",
-      value: 20,
-    },
+    yield: fermentable.yield,
+    color: fermentable.color,
   };
 
   return {

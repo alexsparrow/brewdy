@@ -74,7 +74,9 @@ export const RecipeCreator = () => {
           updateFermentable={(idx, fermentable) =>
             dispatchRecipe({ type: "updateFermentable", idx, fermentable })
           }
-          addFermentable={() => dispatchRecipe({ type: "addFermentable" })}
+          addFermentable={(fermentable: BeerJSON.FermentableType) =>
+            dispatchRecipe({ type: "addFermentable", fermentable })
+          }
           deleteFermentable={(idx) =>
             dispatchRecipe({ type: "deleteFermentable", idx })
           }

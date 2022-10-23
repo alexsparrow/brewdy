@@ -2,16 +2,13 @@ import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { RecipeCreator } from "./views/RecipeCreator";
 import "tippy.js/dist/tippy.css";
+import { classNames } from "./utils/classNames";
 
 const navigation = [
   { name: "Home", href: "#", current: false },
   { name: "Recipes", href: "#", current: true },
   { name: "Settings", href: "#", current: false },
 ];
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
 
 const App = () => {
   return (

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ppgToYield, yieldToPPG } from "../algos/gravity";
 import { OlFarve } from "../algos/olfarve";
+import { AddFermentable } from "./AddFermentable";
 import { AnchorButton } from "./AnchorButton";
 
 export const NumericEdit = ({
@@ -152,100 +153,110 @@ export const Fermentables = ({
     idx: number,
     fermentable: BeerJSON.FermentableAdditionType
   ) => void;
-  addFermentable: () => void;
+  addFermentable: (fermentable: BeerJSON.FermentableType) => void;
   deleteFermentable: (idx: number) => void;
 }) => {
   const [editingIdx, setEditingIdx] = useState<number | null>(null);
   const [restoreValue, setRestoreValue] =
     useState<BeerJSON.FermentableAdditionType | null>(null);
 
-  const onAdd = () => {
+  const onAdd = (fermentable: BeerJSON.FermentableType) => {
     setEditingIdx(fermentables.length);
-    addFermentable();
+    addFermentable(fermentable);
   };
+  const [addFermentableOpen, setAddFermentableOpen] = useState(false);
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
-      <div className="sm:flex sm:items-center">
-        <div className="sm:flex-auto">
-          <h1 className="text-xl font-semibold text-gray-900">Fermentables</h1>
+    <>
+      <AddFermentable
+        onAdd={onAdd}
+        open={addFermentableOpen}
+        setOpen={setAddFermentableOpen}
+      />
+      <div className="px-4 sm:px-6 lg:px-8">
+        <div className="sm:flex sm:items-center">
+          <div className="sm:flex-auto">
+            <h1 className="text-xl font-semibold text-gray-900">
+              Fermentables
+            </h1>
+          </div>
+          <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+            <button
+              type="button"
+              className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+              onClick={() => setAddFermentableOpen(true)}
+            >
+              Add
+            </button>
+          </div>
         </div>
-        <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-          <button
-            type="button"
-            className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-            onClick={onAdd}
-          >
-            Add
-          </button>
-        </div>
-      </div>
-      <div className="mt-4 flex flex-col">
-        <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-            <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-              <table className="min-w-full divide-y divide-gray-300">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                    >
-                      Name
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Details
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Addition
-                    </th>
-                    <th
-                      scope="col"
-                      className="relative py-3.5 pl-3 pr-4 sm:pr-6"
-                    >
-                      <span className="sr-only">Edit</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200 bg-white">
-                  {fermentables.map((fermentable, idx) => (
-                    <FermentableRow
-                      fermentable={fermentable}
-                      editing={editingIdx === idx}
-                      key={idx}
-                      onEdit={() => {
-                        setRestoreValue({ ...fermentable });
-                        setEditingIdx(idx);
-                      }}
-                      onEditCancel={() => {
-                        if (restoreValue) {
-                          updateFermentable(idx, restoreValue);
-                        }
-                        setRestoreValue(null);
-                        setEditingIdx(null);
-                      }}
-                      onEditSave={() => {
-                        setRestoreValue(null);
-                        setEditingIdx(null);
-                      }}
-                      onChange={(v) => {
-                        updateFermentable(idx, { ...fermentable, ...v });
-                      }}
-                      onDelete={() => deleteFermentable(idx)}
-                    />
-                  ))}
-                </tbody>
-              </table>
+        <div className="mt-4 flex flex-col">
+          <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+              <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                <table className="min-w-full divide-y divide-gray-300">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th
+                        scope="col"
+                        className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                      >
+                        Name
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
+                        Details
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
+                        Addition
+                      </th>
+                      <th
+                        scope="col"
+                        className="relative py-3.5 pl-3 pr-4 sm:pr-6"
+                      >
+                        <span className="sr-only">Edit</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 bg-white">
+                    {fermentables.map((fermentable, idx) => (
+                      <FermentableRow
+                        fermentable={fermentable}
+                        editing={editingIdx === idx}
+                        key={idx}
+                        onEdit={() => {
+                          setRestoreValue({ ...fermentable });
+                          setEditingIdx(idx);
+                        }}
+                        onEditCancel={() => {
+                          if (restoreValue) {
+                            updateFermentable(idx, restoreValue);
+                          }
+                          setRestoreValue(null);
+                          setEditingIdx(null);
+                        }}
+                        onEditSave={() => {
+                          setRestoreValue(null);
+                          setEditingIdx(null);
+                        }}
+                        onChange={(v) => {
+                          updateFermentable(idx, { ...fermentable, ...v });
+                        }}
+                        onDelete={() => deleteFermentable(idx)}
+                      />
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

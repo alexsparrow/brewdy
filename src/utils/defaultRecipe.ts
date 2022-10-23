@@ -19,46 +19,7 @@ export const defaultRecipe: Recipe = {
     },
   },
   ingredients: {
-    fermentable_additions: [
-      {
-        name: "Maris Otter",
-        type: "grain",
-        producer: "Crisp",
-        amount: {
-          value: 1.58,
-          unit: "kg",
-        },
-        color: {
-          value: 17.9,
-          unit: "EBC",
-        },
-        yield: {
-          fine_grind: {
-            value: 81,
-            unit: "%",
-          },
-        },
-      },
-      {
-        name: "Pilsner",
-        type: "grain",
-        producer: "Crisp",
-        amount: {
-          value: 0.9,
-          unit: "kg",
-        },
-        color: {
-          value: 7.9,
-          unit: "EBC",
-        },
-        yield: {
-          fine_grind: {
-            value: 78,
-            unit: "%",
-          },
-        },
-      },
-    ],
+    fermentable_additions: [],
     hop_additions: [
       {
         name: "East Kent Goldings",
