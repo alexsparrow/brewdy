@@ -40,6 +40,7 @@ export const FermentableRow = ({
   onEditSave,
   onEditCancel,
   onChange,
+  onDelete,
 }: {
   fermentable: BeerJSON.FermentableAdditionType;
   editing: boolean;
@@ -47,6 +48,7 @@ export const FermentableRow = ({
   onEditSave: () => void;
   onEditCancel: () => void;
   onChange: (v: any) => void;
+  onDelete: () => void;
 }) => (
   <tr>
     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
@@ -122,14 +124,19 @@ export const FermentableRow = ({
       </span>
     </td>
     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-      {editing ? (
-        <div className="space-x-2">
-          <AnchorButton onClick={onEditSave}>Save</AnchorButton>
-          <AnchorButton onClick={onEditCancel}>Cancel</AnchorButton>
-        </div>
-      ) : (
-        <AnchorButton onClick={onEdit}>Edit</AnchorButton>
-      )}
+      <div className="space-x-2">
+        {editing ? (
+          <>
+            <AnchorButton onClick={onEditSave}>Save</AnchorButton>
+            <AnchorButton onClick={onEditCancel}>Cancel</AnchorButton>
+          </>
+        ) : (
+          <>
+            <AnchorButton onClick={onEdit}>Edit</AnchorButton>
+            <AnchorButton onClick={onDelete}>Delete</AnchorButton>
+          </>
+        )}
+      </div>
     </td>
   </tr>
 );
@@ -137,16 +144,25 @@ export const FermentableRow = ({
 export const Fermentables = ({
   fermentables,
   updateFermentable,
+  addFermentable,
+  deleteFermentable,
 }: {
   fermentables: BeerJSON.FermentableAdditionType[];
   updateFermentable: (
     idx: number,
     fermentable: BeerJSON.FermentableAdditionType
   ) => void;
+  addFermentable: () => void;
+  deleteFermentable: (idx: number) => void;
 }) => {
   const [editingIdx, setEditingIdx] = useState<number | null>(null);
   const [restoreValue, setRestoreValue] =
     useState<BeerJSON.FermentableAdditionType | null>(null);
+
+  const onAdd = () => {
+    setEditingIdx(fermentables.length);
+    addFermentable();
+  };
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
@@ -158,6 +174,7 @@ export const Fermentables = ({
           <button
             type="button"
             className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+            onClick={onAdd}
           >
             Add
           </button>
@@ -220,6 +237,7 @@ export const Fermentables = ({
                       onChange={(v) => {
                         updateFermentable(idx, { ...fermentable, ...v });
                       }}
+                      onDelete={() => deleteFermentable(idx)}
                     />
                   ))}
                 </tbody>

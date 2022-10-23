@@ -4,40 +4,10 @@ import { Hops } from "../components/Hops";
 import { Select } from "../components/Select";
 import { Stats } from "../components/Stats";
 import { Yeast } from "../components/Yeast";
-import { Recipe } from "../models/models";
 import _ from "lodash";
-import styles from "../json/styles.json";
 import { defaultRecipe } from "../utils/defaultRecipe";
-
-const beerStyles = _.sortBy(styles as BeerJSON.StyleType[], (s) => s.name);
-
-const reducer = (state: Recipe, action: any): Recipe => {
-  switch (action.type) {
-    case "updateFermentable":
-      const fermentableAdditions = [...state.ingredients.fermentable_additions];
-      fermentableAdditions[action.idx] = action.fermentable;
-
-      return {
-        ...state,
-        ingredients: {
-          ...state.ingredients,
-          fermentable_additions: fermentableAdditions,
-        },
-      };
-    case "updateStyle":
-      return {
-        ...state,
-        style: { ...beerStyles[action.id], type: "beer" },
-      };
-    case "updateBatchSize":
-      return {
-        ...state,
-        batch_size: { value: action.value, unit: action.unit },
-      };
-    default:
-      throw Error("JUST NO");
-  }
-};
+import { reducer } from "../state/recipe";
+import { beerStyles } from "../data/beerStyles";
 
 export const RecipeCreator = () => {
   const [recipe, dispatchRecipe] = useReducer(reducer, defaultRecipe);
@@ -103,6 +73,10 @@ export const RecipeCreator = () => {
           fermentables={recipe.ingredients.fermentable_additions}
           updateFermentable={(idx, fermentable) =>
             dispatchRecipe({ type: "updateFermentable", idx, fermentable })
+          }
+          addFermentable={() => dispatchRecipe({ type: "addFermentable" })}
+          deleteFermentable={(idx) =>
+            dispatchRecipe({ type: "deleteFermentable", idx })
           }
         />
       </div>
