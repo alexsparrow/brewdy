@@ -15,6 +15,9 @@ import { fermentables } from "../data/fermentables";
 import { hops } from "../data/hops";
 import { cultures } from "../data/cultures";
 
+import maltImage from "../images/Malt_en_grain.jpg";
+import hopImage from "../images/1920px-Hopfendolde-mit-hopfengarten.jpg";
+import cultureImage from "../images/1280px-S_cerevisiae_under_DIC_microscopy.jpg";
 
 const FermentablesTable = IngredientTable<
   BeerJSON.FermentableAdditionType,
@@ -44,7 +47,7 @@ export const RecipeCreator = ({
   const dispatchRecipe = (action: any) => {
     setEdited(true);
     dispatchRecipe_(action);
-  }
+  };
 
   return (
     <>
@@ -124,7 +127,7 @@ export const RecipeCreator = ({
         <div className="mt-8">
           <FermentablesTable
             title="Fermentables"
-            image="/Malt_en_grain.JPG"
+            image={maltImage}
             items={recipe.ingredients.fermentable_additions}
             ingredients={fermentables}
             update={(idx, fermentable) =>
@@ -142,7 +145,7 @@ export const RecipeCreator = ({
         <div className="mt-8">
           <HopsTable
             title="Hops"
-            image="/1920px-Hopfendolde-mit-hopfengarten.jpg"
+            image={hopImage}
             items={recipe.ingredients.hop_additions || []}
             ingredients={hops}
             update={(idx, hop) =>
@@ -158,7 +161,7 @@ export const RecipeCreator = ({
         <div className="mt-8">
           <CulturesTable
             title="Cultures"
-            image="/1280px-S_cerevisiae_under_DIC_microscopy.jpg"
+            image={cultureImage}
             items={recipe.ingredients.culture_additions || []}
             ingredients={cultures}
             update={(idx, culture) =>
