@@ -3,6 +3,8 @@
 
 Brewdy is open source homebrewing software built in react. The result of about 6 hours of hacking so far, it's pre-pre-pre-alpha.
 
+Try it out [here](https://alexsparrow.me/brewdy).
+
 
 ## Near term goals
 - A data model based on [beerjson](https://beerjson.github.io/)
