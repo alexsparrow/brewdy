@@ -1,0 +1,25 @@
+
+/* --------------------------- webkit browsers */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 10px;
+  background-color: var(--SliderColor);
+  border-width: 1px;
+  border-style: solid;
+  border-color: white;
+  overflow: visible;
+  cursor: none;
+}
+/* -------------------------- Firefox */
+.slider::-moz-range-thumb { 
+  -moz-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 10px;
+  background-color: var(--SliderColor);
+  border-color: white;
+  overflow: visible;
+  cursor: none;
+}

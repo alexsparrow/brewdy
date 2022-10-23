@@ -29,7 +29,7 @@ export const defaultRecipe: Recipe = {
           unit: "kg",
         },
         color: {
-          value: 7.9,
+          value: 17.9,
           unit: "EBC",
         },
         yield: {

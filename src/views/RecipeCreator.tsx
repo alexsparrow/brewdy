@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { Fermentables, NumericEdit } from "../components/Fermentables";
+import { Fermentables } from "../components/Fermentables";
 import { Hops } from "../components/Hops";
 import { Select } from "../components/Select";
 import { Stats } from "../components/Stats";
@@ -8,10 +8,8 @@ import { Recipe } from "../models/models";
 import _ from "lodash";
 import styles from "../json/styles.json";
 import { defaultRecipe } from "../utils/defaultRecipe";
-import { Range } from "../components/Range";
-import { og } from "../algos/gravity";
 
-const beerStyles = _.sortBy(styles, (s) => s.name);
+const beerStyles = _.sortBy(styles as BeerJSON.StyleType[], (s) => s.name);
 
 const reducer = (state: Recipe, action: any): Recipe => {
   switch (action.type) {
@@ -43,18 +41,11 @@ const reducer = (state: Recipe, action: any): Recipe => {
 
 export const RecipeCreator = () => {
   const [recipe, dispatchRecipe] = useReducer(reducer, defaultRecipe);
-  const style = beerStyles.find((s) => s.name === recipe.style?.name);
-  const originalGravity = og(
-    recipe.ingredients.fermentable_additions,
-    recipe.batch_size,
-    recipe.efficiency.mash!
-  );
-  console.log(style);
+
   return (
     <div className="App">
-      <Stats recipe={recipe} />
       <div className="px-4 sm:px-6 lg:px-8">
-        <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+        <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
           <div className="sm:col-span-3">
             <Select
               label="Style"
@@ -101,23 +92,12 @@ export const RecipeCreator = () => {
           </div>
         </div>
       </div>
-      <Range
-        value={originalGravity}
-        label="OG"
-        step={0.001}
-        range={[
-          0.97 * style?.original_gravity.minimum.value!,
-          1.03 * style?.original_gravity.maximum.value!,
-        ]}
-        green={[
-          style?.original_gravity.minimum.value!,
-          style?.original_gravity.maximum.value!,
-        ]}
-        yellow={[
-          0.98 * style?.original_gravity.minimum.value!,
-          1.02 * style?.original_gravity.maximum.value!,
-        ]}
+
+      <Stats
+        recipe={recipe}
+        beerStyle={beerStyles.find((s) => s.name === recipe.style?.name)}
       />
+
       <div className="mt-8">
         <Fermentables
           fermentables={recipe.ingredients.fermentable_additions}

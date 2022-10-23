@@ -15,7 +15,7 @@ function classNames(...classes: string[]) {
 const App = () => {
   return (
     <>
-      <div className="min-h-full">
+      <div className="min-h-full bg-gray-50">
         <Disclosure as="nav" className="bg-indigo-600">
           {({ open }) => (
             <>
