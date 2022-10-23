@@ -1,13 +1,34 @@
 import { useReducer } from "react";
-import { Fermentables } from "../components/Fermentables";
-import { Hops } from "../components/Hops";
 import { Select } from "../components/Select";
 import { Stats } from "../components/Stats";
-import { Yeast } from "../components/Yeast";
 import _ from "lodash";
 import { defaultRecipe } from "../utils/defaultRecipe";
 import { reducer } from "../state/recipe";
 import { beerStyles } from "../data/beerStyles";
+import {
+  CultureDetails,
+  FermentableDetails,
+  HopDetails,
+  IngredientTable,
+} from "../components/IngredientTable";
+import { fermentables } from "../data/fermentables";
+import { hops } from "../data/hops";
+import { cultures } from "../data/cultures";
+
+const FermentablesTable = IngredientTable<
+  BeerJSON.FermentableAdditionType,
+  BeerJSON.FermentableType
+>;
+
+const HopsTable = IngredientTable<
+  BeerJSON.HopAdditionType,
+  BeerJSON.HopVarietyBase
+>;
+
+const CulturesTable = IngredientTable<
+  BeerJSON.CultureAdditionType,
+  BeerJSON.CultureInformation
+>;
 
 export const RecipeCreator = () => {
   const [recipe, dispatchRecipe] = useReducer(reducer, defaultRecipe);
@@ -69,33 +90,49 @@ export const RecipeCreator = () => {
       />
 
       <div className="mt-8">
-        <Fermentables
-          fermentables={recipe.ingredients.fermentable_additions}
-          updateFermentable={(idx, fermentable) =>
+        <FermentablesTable
+          title="Fermentables"
+          image="/Malt_en_grain.JPG"
+          items={recipe.ingredients.fermentable_additions}
+          ingredients={fermentables}
+          update={(idx, fermentable) =>
             dispatchRecipe({ type: "updateFermentable", idx, fermentable })
           }
-          addFermentable={(fermentable: BeerJSON.FermentableType) =>
+          add={(fermentable: BeerJSON.FermentableType) =>
             dispatchRecipe({ type: "addFermentable", fermentable })
           }
-          deleteFermentable={(idx) =>
-            dispatchRecipe({ type: "deleteFermentable", idx })
-          }
+          delete_={(idx) => dispatchRecipe({ type: "deleteFermentable", idx })}
+          Details={FermentableDetails}
         />
       </div>
       <div className="mt-8">
-        <Hops
-          hops={recipe.ingredients.hop_additions || []}
-          updateHop={(idx, hop) =>
-            dispatchRecipe({ type: "updateHop", idx, hop })
+        <HopsTable
+          title="Hops"
+          image="/1920px-Hopfendolde-mit-hopfengarten.jpg"
+          items={recipe.ingredients.hop_additions || []}
+          ingredients={hops}
+          update={(idx, hop) => dispatchRecipe({ type: "updateHop", idx, hop })}
+          add={(hop: BeerJSON.HopVarietyBase) =>
+            dispatchRecipe({ type: "addHop", hop })
           }
+          delete_={(idx) => dispatchRecipe({ type: "deleteHop", idx })}
+          Details={HopDetails}
         />
       </div>
       <div className="mt-8">
-        <Yeast
-          yeast={recipe.ingredients.culture_additions || []}
-          updateYeast={(idx, yeast) =>
-            dispatchRecipe({ type: "updateYeast", idx, yeast })
+        <CulturesTable
+          title="Cultures"
+          image="/1280px-S_cerevisiae_under_DIC_microscopy.jpg"
+          items={recipe.ingredients.culture_additions || []}
+          ingredients={cultures}
+          update={(idx, hop) =>
+            dispatchRecipe({ type: "updateCulture", idx, hop })
           }
+          add={(culture: BeerJSON.CultureInformation) =>
+            dispatchRecipe({ type: "addCulture", culture })
+          }
+          delete_={(idx) => dispatchRecipe({ type: "deleteCulture", idx })}
+          Details={CultureDetails}
         />
       </div>
     </div>

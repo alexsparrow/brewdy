@@ -29,6 +29,8 @@ const style_sql = `
             examples
         FROM
             style
+        WHERE
+          display
 `;
 
 const db = new Database(dbFile, OPEN_READONLY, (err) => {
@@ -141,8 +143,9 @@ const fermentable_sql = `
         moisture
     FROM
         fermentable
-`
-
+    WHERE
+      display
+`;
 
 db.serialize(() => {
   const fermentables: BeerJSON.FermentableType[] = [];
@@ -158,19 +161,19 @@ db.serialize(() => {
         producer: row.supplier,
         type: row.ftype.toLowerCase(),
         yield: {
-            fine_grind: {
-                unit: "%",
-                value: row.yield
-            },
+          fine_grind: {
+            unit: "%",
+            value: row.yield,
+          },
         },
         color: {
-            unit: "SRM",
-            value: row.color
+          unit: "SRM",
+          value: row.color,
         },
         moisture: {
-            value: row.moisture,
-            unit: "%"
-        }
+          value: row.moisture,
+          unit: "%",
+        },
       };
 
       fermentables.push(fermentable);
@@ -179,6 +182,111 @@ db.serialize(() => {
       const data = JSON.stringify(fermentables, undefined, 1);
 
       writeFile("./src/json/fermentables.json", data, (err) => {
+        if (err) {
+          console.error(err);
+          process.exit(1);
+        }
+      });
+    }
+  );
+});
+
+const hop_sql = `
+    SELECT
+        name,
+        alpha,
+        beta,
+        origin
+    FROM
+        hop
+    WHERE
+      display
+`;
+
+db.serialize(() => {
+  const hops: BeerJSON.HopVarietyBase[] = [];
+  db.each(
+    hop_sql,
+    (err, row) => {
+      if (err) {
+        console.error(err);
+        process.exit(1);
+      }
+      const hop: BeerJSON.HopVarietyBase = {
+        name: row.name,
+        producer: row.supplier,
+        alpha_acid: {
+          value: row.alpha,
+          unit: "%",
+        },
+        beta_acid: {
+          value: row.beta,
+          unit: "%",
+        },
+        origin: row.origin,
+      };
+
+      hops.push(hop);
+    },
+    () => {
+      const data = JSON.stringify(hops, undefined, 1);
+
+      writeFile("./src/json/hops.json", data, (err) => {
+        if (err) {
+          console.error(err);
+          process.exit(1);
+        }
+      });
+    }
+  );
+});
+
+
+const yeast_sql = `
+    SELECT
+        name,
+        laboratory,
+        attenuation,
+        form,
+        ytype
+    FROM
+        yeast
+    WHERE
+      display
+`;
+
+db.serialize(() => {
+  const yeasts: BeerJSON.CultureInformation[] = [];
+  db.each(
+    yeast_sql,
+    (err, row) => {
+      if (err) {
+        console.error(err);
+        process.exit(1);
+      }
+      const yeast: BeerJSON.CultureInformation = {
+        name: row.name,
+        producer: row.laboratory,
+        type: row.ytype.toLowerCase(),
+        form: row.form.toLowerCase(),
+        attenuation_range: {
+          minimum: {
+            unit: "%",
+            value: row.attenuation,
+          },
+          maximum: {
+            unit: "%",
+            value: row.attenuation
+          }
+        }
+      };
+
+      yeasts.push(yeast);
+    },
+    () => {
+      const data = JSON.stringify(yeasts, undefined, 1);
+
+      writeFile("./src/json/cultures.json", data, (err) => {
         if (err) {
           console.error(err);
           process.exit(1);

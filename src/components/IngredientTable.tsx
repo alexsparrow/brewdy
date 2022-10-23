@@ -1,8 +1,110 @@
 import { useState } from "react";
 import { ppgToYield, yieldToPPG } from "../algos/gravity";
 import { OlFarve } from "../algos/olfarve";
-import { AddFermentable } from "./AddFermentable";
+import { AddIngredient, Addition, Ingredient } from "./AddIngredient";
 import { AnchorButton } from "./AnchorButton";
+
+type DetailsProps<A extends Addition> = {
+  item: A;
+  editing: boolean;
+  onChange: (v: any) => void;
+};
+
+export const FermentableDetails = ({
+  item: fermentable,
+  editing,
+  onChange,
+}: DetailsProps<BeerJSON.FermentableAdditionType>) => (
+  <>
+    <div className="w-24 h-8">
+      {editing ? (
+        <NumericEdit
+          label="yield"
+          initialValue={yieldToPPG(fermentable.yield)}
+          onChange={(value) =>
+            onChange({
+              yield: {
+                fine_grind: {
+                  ...fermentable.yield.fine_grind,
+                  value: ppgToYield(value),
+                },
+              },
+            })
+          }
+        />
+      ) : (
+        <>{yieldToPPG(fermentable.yield).toFixed(3)} PPG</>
+      )}
+    </div>
+    <span
+      className="inline-flex rounded-full px-2 text-xs leading-5 text-gray-500"
+      style={{
+        backgroundColor: OlFarve.rgbToHex(
+          OlFarve.ebcToSRGB(fermentable.color.value)
+        ),
+      }}
+    >
+      {fermentable.color.value} {fermentable.color.unit}
+    </span>
+  </>
+);
+
+export const HopDetails = ({
+  item,
+  editing,
+  onChange,
+}: DetailsProps<BeerJSON.HopAdditionType>) => (
+  <>
+    <div className="w-24 h-8">
+      {editing ? (
+        <NumericEdit
+          label="weight"
+          initialValue={item.alpha_acid.value}
+          onChange={(value) =>
+            onChange({
+              alpha_acid: {
+                ...item.alpha_acid,
+                value,
+              },
+            })
+          }
+        />
+      ) : (
+        <>{item.alpha_acid.value} %</>
+      )}
+    </div>
+    <span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
+      @ {item.timing.time?.value} {item.timing.time?.unit}
+    </span>
+  </>
+);
+
+export const CultureDetails = ({
+  item,
+  editing,
+  onChange,
+}: DetailsProps<BeerJSON.CultureAdditionType>) => (
+  <>
+    <div className="w-24 h-8">
+      {editing ? (
+        <NumericEdit
+          label="weight"
+          initialValue={item.attenuation!.value}
+          onChange={(value) =>
+            onChange({
+              alpha_acid: {
+                ...item.attenuation,
+                value,
+              },
+            })
+          }
+        />
+      ) : (
+        <>{item.attenuation!.value} %</>
+      )}
+    </div>
+  </>
+);
 
 export const NumericEdit = ({
   label,
@@ -34,81 +136,52 @@ export const NumericEdit = ({
   );
 };
 
-export const FermentableRow = ({
-  fermentable,
+export const Row = <A extends Addition>({
+  item,
+  image,
   editing,
   onEdit,
   onEditSave,
   onEditCancel,
   onChange,
   onDelete,
+  Details,
 }: {
-  fermentable: BeerJSON.FermentableAdditionType;
+  item: A;
+  image: string;
   editing: boolean;
   onEdit: () => void;
   onEditSave: () => void;
   onEditCancel: () => void;
   onChange: (v: any) => void;
   onDelete: () => void;
+  Details: React.ComponentType<DetailsProps<A>>;
 }) => (
   <tr>
     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
       <div className="flex items-center">
         <div className="h-10 w-10 flex-shrink-0">
-          <img
-            className="h-10 w-10 rounded-full"
-            src={"/Malt_en_grain.JPG"}
-            alt=""
-          />
+          <img className="h-10 w-10 rounded-full" src={image} alt="" />
         </div>
         <div className="ml-4">
-          <div className="font-medium text-gray-900">{fermentable.name}</div>
-          <div className="text-gray-500">{fermentable.producer}</div>
+          <div className="font-medium text-gray-900">{item.name}</div>
+          <div className="text-gray-500">{item.producer}</div>
         </div>
       </div>
     </td>
     <td className="whitespace-nowrap px-3 py-4 text-2xl">
-      <div className="w-24 h-8">
-        {editing ? (
-          <NumericEdit
-            label="yield"
-            initialValue={yieldToPPG(fermentable.yield)}
-            onChange={(value) =>
-              onChange({
-                yield: {
-                  fine_grind: {
-                    ...fermentable.yield.fine_grind,
-                    value: ppgToYield(value),
-                  },
-                },
-              })
-            }
-          />
-        ) : (
-          <>{yieldToPPG(fermentable.yield).toFixed(3)} PPG</>
-        )}
-      </div>
-      <span
-        className="inline-flex rounded-full px-2 text-xs leading-5 text-gray-500"
-        style={{
-          backgroundColor: OlFarve.rgbToHex(
-            OlFarve.ebcToSRGB(fermentable.color.value)
-          ),
-        }}
-      >
-        {fermentable.color.value} {fermentable.color.unit}
-      </span>
+      <Details item={item} editing={editing} onChange={onChange} />
     </td>
     <td className="whitespace-nowrap px-3 py-4 text-2xl">
       <div className="w-24 h-8">
         {editing ? (
           <NumericEdit
             label="weight"
-            initialValue={fermentable.amount.value}
+            initialValue={item.amount?.value || 0}
             onChange={(value) =>
               onChange({
                 amount: {
-                  ...fermentable.amount,
+                  ...item.amount,
                   value,
                 },
               })
@@ -116,7 +189,7 @@ export const FermentableRow = ({
           />
         ) : (
           <>
-            {fermentable.amount.value} {fermentable.amount.unit}{" "}
+            {item.amount?.value} {item.amount?.unit}
           </>
         )}
       </div>
@@ -142,49 +215,52 @@ export const FermentableRow = ({
   </tr>
 );
 
-export const Fermentables = ({
-  fermentables,
-  updateFermentable,
-  addFermentable,
-  deleteFermentable,
+export const IngredientTable = <A extends Addition, I extends Ingredient>({
+  ingredients,
+  title,
+  items,
+  image,
+  update,
+  add,
+  delete_,
+  Details,
 }: {
-  fermentables: BeerJSON.FermentableAdditionType[];
-  updateFermentable: (
-    idx: number,
-    fermentable: BeerJSON.FermentableAdditionType
-  ) => void;
-  addFermentable: (fermentable: BeerJSON.FermentableType) => void;
-  deleteFermentable: (idx: number) => void;
+  ingredients: I[];
+  title: string;
+  items: A[];
+  image: string;
+  update: (idx: number, item: A) => void;
+  add: (item: I) => void;
+  delete_: (idx: number) => void;
+  Details: React.ComponentType<DetailsProps<A>>;
 }) => {
   const [editingIdx, setEditingIdx] = useState<number | null>(null);
-  const [restoreValue, setRestoreValue] =
-    useState<BeerJSON.FermentableAdditionType | null>(null);
+  const [restoreValue, setRestoreValue] = useState<A | null>(null);
 
-  const onAdd = (fermentable: BeerJSON.FermentableType) => {
-    setEditingIdx(fermentables.length);
-    addFermentable(fermentable);
+  const onAdd = (item: I) => {
+    setEditingIdx(items.length);
+    add(item);
   };
-  const [addFermentableOpen, setAddFermentableOpen] = useState(false);
+  const [addOpen, setAddOpen] = useState(false);
 
   return (
     <>
-      <AddFermentable
+      <AddIngredient
+        ingredients={ingredients}
         onAdd={onAdd}
-        open={addFermentableOpen}
-        setOpen={setAddFermentableOpen}
+        open={addOpen}
+        setOpen={setAddOpen}
       />
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
-            <h1 className="text-xl font-semibold text-gray-900">
-              Fermentables
-            </h1>
+            <h1 className="text-xl font-semibold text-gray-900">{title}</h1>
           </div>
           <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
             <button
               type="button"
               className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-              onClick={() => setAddFermentableOpen(true)}
+              onClick={() => setAddOpen(true)}
             >
               Add
             </button>
@@ -224,18 +300,19 @@ export const Fermentables = ({
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {fermentables.map((fermentable, idx) => (
-                      <FermentableRow
-                        fermentable={fermentable}
+                    {items.map((item, idx) => (
+                      <Row
+                        image={image}
+                        item={item}
                         editing={editingIdx === idx}
                         key={idx}
                         onEdit={() => {
-                          setRestoreValue({ ...fermentable });
+                          setRestoreValue({ ...item });
                           setEditingIdx(idx);
                         }}
                         onEditCancel={() => {
                           if (restoreValue) {
-                            updateFermentable(idx, restoreValue);
+                            update(idx, restoreValue);
                           }
                           setRestoreValue(null);
                           setEditingIdx(null);
@@ -245,9 +322,10 @@ export const Fermentables = ({
                           setEditingIdx(null);
                         }}
                         onChange={(v) => {
-                          updateFermentable(idx, { ...fermentable, ...v });
+                          update(idx, { ...item, ...v });
                         }}
-                        onDelete={() => deleteFermentable(idx)}
+                        onDelete={() => delete_(idx)}
+                        Details={Details}
                       />
                     ))}
                   </tbody>

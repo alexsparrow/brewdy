@@ -1,5 +1,4 @@
 import { beerStyles } from "../data/beerStyles";
-import { fermentables } from "../data/fermentables";
 import { Recipe } from "../models/models";
 
 const updateFermentable = (state: Recipe, action: any): Recipe => {
@@ -54,14 +53,72 @@ const deleteFermentable = (state: Recipe, action: any): Recipe => {
   };
 };
 
+const updateHop = (state: Recipe, action: any): Recipe => {
+  const hopAdditions = [...(state.ingredients.hop_additions || [])];
+  hopAdditions[action.idx] = action.hop;
+
+  return {
+    ...state,
+    ingredients: {
+      ...state.ingredients,
+      hop_additions: hopAdditions,
+    },
+  };
+};
+
+const addHop = (state: Recipe, action: any): Recipe => {
+  const hop: BeerJSON.HopVarietyBase = action.hop;
+  const newHop: BeerJSON.HopAdditionType = {
+    name: hop.name,
+    amount: {
+      unit: "kg",
+      value: 1,
+    },
+    alpha_acid: hop.alpha_acid,
+    beta_acid: hop.beta_acid,
+    timing: {
+      time: {
+        unit: "min",
+        value: 0,
+      },
+    },
+  };
+
+  return {
+    ...state,
+    ingredients: {
+      ...state.ingredients,
+      hop_additions: [...(state.ingredients.hop_additions || []), newHop],
+    },
+  };
+};
+
+const deleteHop = (state: Recipe, action: any): Recipe => {
+  const hopAdditions = [...(state.ingredients.hop_additions || [])];
+
+  return {
+    ...state,
+    ingredients: {
+      ...state.ingredients,
+      hop_additions: hopAdditions.filter((_f, idx) => idx !== action.idx),
+    },
+  };
+};
+
 export const reducer = (state: Recipe, action: any): Recipe => {
   switch (action.type) {
-    case "updateFermentable":
-      return updateFermentable(state, action);
     case "addFermentable":
       return addFermentable(state, action);
+    case "updateFermentable":
+      return updateFermentable(state, action);
     case "deleteFermentable":
       return deleteFermentable(state, action);
+    case "addHop":
+      return addHop(state, action);
+    case "updateHop":
+      return updateHop(state, action);
+    case "deleteHop":
+      return deleteHop(state, action);
     case "updateStyle":
       return {
         ...state,

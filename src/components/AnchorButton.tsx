@@ -9,7 +9,7 @@ export const AnchorButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (props, ref) => (
     <button
       ref={ref}
-      className="text-indigo-600 hover:text-indigo-900"
+      className="text-indigo-600 hover:text-indigo-900 focus:outline-none"
       {...props}
     >
       {props.children}

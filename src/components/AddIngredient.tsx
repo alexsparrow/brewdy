@@ -2,24 +2,35 @@ import { Fragment, useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Combobox, Dialog, Transition } from "@headlessui/react";
 import { classNames } from "../utils/classNames";
-import { fermentables } from "../data/fermentables";
 
-export const AddFermentable = ({
+export type Ingredient =
+  | BeerJSON.HopVarietyBase
+  | BeerJSON.FermentableType
+  | BeerJSON.CultureInformation;
+
+export type Addition =
+  | BeerJSON.HopAdditionType
+  | BeerJSON.FermentableAdditionType
+  | BeerJSON.CultureAdditionType;
+
+export const AddIngredient = <I extends Ingredient>({
   open,
   setOpen,
   onAdd,
+  ingredients,
 }: {
   open: boolean;
   setOpen: (v: boolean) => void;
-  onAdd: (fermentable: BeerJSON.FermentableType) => void;
+  onAdd: (item: I) => void;
+  ingredients: I[];
 }) => {
   const [query, setQuery] = useState("");
 
   const filtered =
     query === ""
       ? []
-      : fermentables.filter((fermentable) => {
-          return fermentable.name.toLowerCase().includes(query.toLowerCase());
+      : ingredients.filter((ingredient) => {
+          return ingredient.name.toLowerCase().includes(query.toLowerCase());
         });
 
   return (
@@ -54,8 +65,8 @@ export const AddFermentable = ({
           >
             <Dialog.Panel className="mx-auto max-w-xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all">
               <Combobox
-                onChange={(fermentable: BeerJSON.FermentableType) => {
-                  onAdd(fermentable);
+                onChange={(ingredient: I) => {
+                  onAdd(ingredient);
                   setOpen(false);
                 }}
               >
@@ -76,10 +87,10 @@ export const AddFermentable = ({
                     static
                     className="max-h-72 scroll-py-2 overflow-y-auto py-2 text-sm text-gray-800"
                   >
-                    {filtered.map((fermentable, idx) => (
+                    {filtered.map((ingredient, idx) => (
                       <Combobox.Option
                         key={idx}
-                        value={fermentable}
+                        value={ingredient}
                         className={({ active }) =>
                           classNames(
                             "cursor-default select-none px-4 py-2",
@@ -87,14 +98,16 @@ export const AddFermentable = ({
                           )
                         }
                       >
-                        {fermentable.name}
+                        {ingredient.name}
                       </Combobox.Option>
                     ))}
                   </Combobox.Options>
                 )}
 
                 {query !== "" && filtered.length === 0 && (
-                  <p className="p-4 text-sm text-gray-500">No people found.</p>
+                  <p className="p-4 text-sm text-gray-500">
+                    No ingredients found.
+                  </p>
                 )}
               </Combobox>
             </Dialog.Panel>

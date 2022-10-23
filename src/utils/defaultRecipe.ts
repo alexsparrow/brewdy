@@ -1,9 +1,11 @@
+import { beerStyles } from "../data/beerStyles";
 import { Recipe } from "../models/models";
 
 export const defaultRecipe: Recipe = {
   name: "My Recipe",
   type: "all grain",
   author: "",
+  style: beerStyles[0],
   batch_size: {
     unit: "l",
     value: 18.92,
@@ -20,25 +22,7 @@ export const defaultRecipe: Recipe = {
   },
   ingredients: {
     fermentable_additions: [],
-    hop_additions: [
-      {
-        name: "East Kent Goldings",
-        alpha_acid: {
-          value: 5.5,
-          unit: "%",
-        },
-        amount: {
-          value: 100,
-          unit: "g",
-        },
-        timing: {
-          time: {
-            value: 20,
-            unit: "min",
-          },
-        },
-      },
-    ],
+    hop_additions: [],
     culture_additions: [
       {
         name: "Belgian Ale Yeast",
