@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/brewdy/static/css/main.239411d5.css",
-    "main.js": "/brewdy/static/js/main.7fa51f0c.js",
-    "static/js/787.f5b844e5.chunk.js": "/brewdy/static/js/787.f5b844e5.chunk.js",
+    "main.js": "/brewdy/static/js/main.aad1ba7d.js",
+    "static/js/787.1cfc6f6e.chunk.js": "/brewdy/static/js/787.1cfc6f6e.chunk.js",
     "index.html": "/brewdy/index.html",
     "main.239411d5.css.map": "/brewdy/static/css/main.239411d5.css.map",
-    "main.7fa51f0c.js.map": "/brewdy/static/js/main.7fa51f0c.js.map",
-    "787.f5b844e5.chunk.js.map": "/brewdy/static/js/787.f5b844e5.chunk.js.map"
+    "main.aad1ba7d.js.map": "/brewdy/static/js/main.aad1ba7d.js.map",
+    "787.1cfc6f6e.chunk.js.map": "/brewdy/static/js/787.1cfc6f6e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.239411d5.css",
-    "static/js/main.7fa51f0c.js"
+    "static/js/main.aad1ba7d.js"
   ]
 }
