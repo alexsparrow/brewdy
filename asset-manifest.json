@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/brewdy/static/css/main.239411d5.css",
-    "main.js": "/brewdy/static/js/main.958a428e.js",
+    "main.css": "/brewdy/static/css/main.9bbc3425.css",
+    "main.js": "/brewdy/static/js/main.9d8d7da3.js",
     "static/js/787.1cfc6f6e.chunk.js": "/brewdy/static/js/787.1cfc6f6e.chunk.js",
     "static/media/Malt_en_grain.jpg": "/brewdy/static/media/Malt_en_grain.3da3c0a90c7bbb02b552.jpg",
     "static/media/1920px-Hopfendolde-mit-hopfengarten.jpg": "/brewdy/static/media/1920px-Hopfendolde-mit-hopfengarten.15bb21956d68c2991cdf.jpg",
     "static/media/1280px-S_cerevisiae_under_DIC_microscopy.jpg": "/brewdy/static/media/1280px-S_cerevisiae_under_DIC_microscopy.ad5c8600d315f07be01a.jpg",
     "index.html": "/brewdy/index.html",
-    "main.239411d5.css.map": "/brewdy/static/css/main.239411d5.css.map",
-    "main.958a428e.js.map": "/brewdy/static/js/main.958a428e.js.map",
+    "main.9bbc3425.css.map": "/brewdy/static/css/main.9bbc3425.css.map",
+    "main.9d8d7da3.js.map": "/brewdy/static/js/main.9d8d7da3.js.map",
     "787.1cfc6f6e.chunk.js.map": "/brewdy/static/js/787.1cfc6f6e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.239411d5.css",
-    "static/js/main.958a428e.js"
+    "static/css/main.9bbc3425.css",
+    "static/js/main.9d8d7da3.js"
   ]
 }
